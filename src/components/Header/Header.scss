@@ -1,0 +1,25 @@
+.header__container {
+  padding: 20px;
+  .header {
+    display: flex;
+    flex-direction: column;
+
+    &__content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__buttons img {
+      cursor: pointer;
+    }
+
+    &__results {
+      font-size: 12px;
+
+      span {
+        color: #abacbe;
+      }
+    }
+  }
+}

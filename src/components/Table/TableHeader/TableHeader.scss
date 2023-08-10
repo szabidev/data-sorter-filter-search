@@ -1,0 +1,15 @@
+.sorter {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0 5px;
+}
+
+.desc {
+  transform: rotate(180deg);
+  transition: transform 0.2s linear;
+}
+
+.asc {
+  transform: rotate(0deg);
+  transition: transform 0.3s linear;
+}
