@@ -3,6 +3,7 @@ import Header from "../Header";
 import TableContainer from "../Table/TableContainer";
 import { UserData } from "../userData";
 import SearchBar from "../SearchBar";
+import FilterBar from "../FilterBar";
 
 const DataView = () => {
   const [data, setData] = useState<UserData[]>([]);
@@ -85,6 +86,7 @@ const DataView = () => {
     <div className="dataview__container">
       <Header setData={setData} setSearchTerm={setSearchTerm} />
       <SearchBar onSearch={handleSearch} />
+      <FilterBar filter={data} />
       <TableContainer
         data={sortedData}
         handleSort={handleSort}

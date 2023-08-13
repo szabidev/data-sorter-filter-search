@@ -35,9 +35,6 @@ const Header: FC<HeaderProps> = ({ setData, setSearchTerm }) => {
             <img src="/assets/svg/settings.svg" alt="settings button" />
           </div>
         </div>
-        <div className="header__results">
-          <span>Showing</span> 189 <span>from</span> 1000 <span>results</span>
-        </div>
       </div>
     </div>
   );

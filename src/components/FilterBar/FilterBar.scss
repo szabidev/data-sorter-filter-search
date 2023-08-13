@@ -1,0 +1,112 @@
+.filterbar__container {
+  margin: 20px;
+
+  .filter__btn {
+    cursor: pointer;
+    width: 100px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff218c;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .filter__popup {
+    width: 600px;
+    height: 200px;
+    border: 1px solid #ad9fff;
+    background-color: #fff;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+
+    .filter__categories {
+      display: flex;
+      width: 600px;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+    .gender__filter {
+      label {
+        margin-right: 15px;
+      }
+      select {
+        padding: 5px 10px;
+        width: 100px;
+        border-color: #ad9fff;
+        border-radius: 4px;
+        outline: none;
+      }
+    }
+
+    .country__filter {
+      label {
+        margin-right: 10px;
+      }
+
+      select {
+        padding: 5px 10px;
+        border-color: #ad9fff;
+        border-radius: 4px;
+        outline: none;
+      }
+    }
+
+    .filter__buttons {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+
+      button {
+        width: 100px;
+        padding: 5px;
+        font-size: 15px;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .filter__cancel {
+        background-color: #ff218c;
+      }
+      .filter__apply {
+        background-color: #ad9fff;
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 998;
+    cursor: pointer;
+  }
+
+  .filter__results {
+    margin-top: 10px;
+    font-size: 12px;
+    span {
+      color: #abacbe;
+    }
+  }
+}
