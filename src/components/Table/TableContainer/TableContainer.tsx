@@ -14,7 +14,6 @@ const TableContainer: FC<TableContainerProps> = ({
   columnLabels,
   handleSort,
 }) => {
-  console.log(data);
   return (
     <div className="table__container">
       <table className="table__content">

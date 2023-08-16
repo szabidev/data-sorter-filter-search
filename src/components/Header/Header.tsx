@@ -15,7 +15,6 @@ const Header: FC<HeaderProps> = ({ setData, setSearchTerm }) => {
       })
       .then((data) => {
         setData(data.results);
-        console.log(data);
       });
 
     setSearchTerm("");

@@ -12,6 +12,9 @@ const DataView = () => {
     "first" | "last" | "age" | "none"
   >("none");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [filteredData, setFilteredData] = useState<UserData[]>([]);
 
   const BASE_URL = "https://randomuser.me/api/?results=1000";
   const columnLabels = [
@@ -26,17 +29,6 @@ const DataView = () => {
     { key: "location.country", label: "Country" },
     { key: "nat", label: "Nationality" },
   ];
-
-  useEffect(() => {
-    fetch(BASE_URL)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.results);
-        console.log(data);
-      });
-  }, []);
 
   const searchData = data.filter((user) => {
     const userFirstName = user.name.first.toLowerCase();
@@ -55,6 +47,11 @@ const DataView = () => {
   const handleSearch = (keyword: string) => {
     setSearchTerm(keyword);
   };
+
+  // const applyFilters = (gender: string | null, country: string | null) => {
+  //   setSelectedGender(gender);
+  //   setSelectedCountry(country);
+  // };
 
   const handleSort = (column: "first" | "last" | "age") => {
     if (sortColumn === column) {
@@ -82,13 +79,45 @@ const DataView = () => {
     });
   }
 
+  useEffect(() => {
+    fetch(BASE_URL)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setData(data.results);
+      });
+  }, []);
+
+  useEffect(() => {
+    const filter = displayedData.filter((user) => {
+      const matchesGender = selectedGender
+        ? user.gender === selectedGender
+        : true;
+      const matchesCountry = selectedCountry
+        ? user.location.country === selectedCountry
+        : true;
+      return matchesGender && matchesCountry;
+    });
+    console.log("useeffect");
+    setFilteredData(filter);
+  }, [displayedData, selectedGender, selectedCountry]);
+
   return (
     <div className="dataview__container">
       <Header setData={setData} setSearchTerm={setSearchTerm} />
       <SearchBar onSearch={handleSearch} />
-      <FilterBar filter={data} />
+      <FilterBar
+        filter={data}
+        filteredData={filteredData}
+        // applyFilters={applyFilters}
+        selectedGender={selectedGender}
+        selectedCountry={selectedCountry}
+        setSelectedGender={setSelectedGender}
+        setSelectedCountry={setSelectedCountry}
+      />
       <TableContainer
-        data={sortedData}
+        data={filteredData}
         handleSort={handleSort}
         columnLabels={columnLabels}
       />

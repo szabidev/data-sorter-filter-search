@@ -16,8 +16,6 @@ const TableHeader: FC<TableHeaderProps> = ({
   const [isAscLastName, setIsAscLastName] = useState<boolean>(true);
   const [isAscAge, setIsAscAge] = useState<boolean>(true);
 
-  console.log(data);
-
   const sortByFirstName = () => {
     handleSort("first");
     setIsAscFristName(!isAscFirstName);
