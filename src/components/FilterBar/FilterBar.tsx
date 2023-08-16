@@ -3,25 +3,14 @@ import { UserData } from "../userData";
 
 interface FilterBarProps {
   filter: UserData[];
-  filteredData: UserData[];
-  selectedGender: string | null;
-  selectedCountry: string | null;
-  setSelectedGender: (gender: string | null) => void;
-  setSelectedCountry: (country: string | null) => void;
-  // applyFilters: (gender: string | null, country: string | null) => void;
+  setData: (users: UserData[]) => void;
 }
 
-const FilterBar: FC<FilterBarProps> = ({
-  filter,
-  filteredData,
-  // applyFilters,
-  selectedCountry,
-  selectedGender,
-  setSelectedCountry,
-  setSelectedGender,
-}) => {
+const FilterBar: FC<FilterBarProps> = ({ filter, setData }) => {
   const [uniqueCountries, setUniqueCountries] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [selectedGender, setSelectedGender] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   useEffect(() => {
     const uniqueCountriesSet = new Set(
@@ -31,15 +20,20 @@ const FilterBar: FC<FilterBarProps> = ({
     setUniqueCountries(uniqueCountriesArray);
   }, [filter]);
 
-  const showData = () => {
-    console.log("showdata");
-    // applyFilters(selectedGender, selectedCountry);
-    setSelectedGender(selectedGender);
-    setSelectedCountry(selectedCountry);
+  const applyFilter = () => {
+    const filteredData = filter.filter((user) => {
+      const matchesGender = selectedGender
+        ? user.gender === selectedGender
+        : true;
+      const matchesCountry = selectedCountry
+        ? user.location.country === selectedCountry
+        : true;
+      return matchesGender && matchesCountry;
+    });
+
+    setData(filteredData);
     setShowPopup(false);
   };
-
-  console.log(filter);
 
   return (
     <div className="filterbar__container">
@@ -82,7 +76,7 @@ const FilterBar: FC<FilterBarProps> = ({
               >
                 Cancel
               </button>
-              <button className="filter__apply" onClick={showData}>
+              <button className="filter__apply" onClick={applyFilter}>
                 Apply
               </button>
             </div>
@@ -100,8 +94,8 @@ const FilterBar: FC<FilterBarProps> = ({
         <p>Filter</p>
       </button>
       <div className="filter__results">
-        <span>Showing</span> {filteredData.length} <span>from</span>{" "}
-        {filter.length} <span>results</span>
+        {/* <span>Showing</span> {filteredData.length} <span>from</span>{" "}
+        {filter.length} <span>results</span> */}
       </div>
     </div>
   );
