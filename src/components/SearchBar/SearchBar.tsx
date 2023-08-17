@@ -1,22 +1,24 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, FC, useEffect, useState } from "react";
 
 interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
+  setSearchTerm: (searchTerm: string) => void;
 }
 
-const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
+const SearchBar: FC<SearchBarProps> = ({ setSearchTerm }) => {
+  const [searchInput, setSearchInput] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let timer;
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(() => {
-      onSearch(e.target.value);
-    }, 1000);
-    setSearchTerm(e.target.value);
+    setSearchInput(e.target.value);
   };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchTerm(searchInput);
+    }, 1000);
+
+    return () => clearTimeout(handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput]);
 
   return (
     <div className="searchbar__container">
@@ -24,7 +26,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
         <input
           type="text"
           className="searchbar__input"
-          value={searchTerm}
+          value={searchInput}
           onChange={handleChange}
           placeholder="Search ..."
         />

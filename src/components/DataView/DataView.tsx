@@ -7,6 +7,7 @@ import FilterBar from "../FilterBar";
 
 const DataView = () => {
   const [data, setData] = useState<UserData[]>([]);
+  const [dataToDisplay, setDataToDisplay] = useState<UserData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortColumn, setSortColumn] = useState<
     "first" | "last" | "age" | "none"
@@ -27,22 +28,20 @@ const DataView = () => {
     { key: "nat", label: "Nationality" },
   ];
 
-  const searchData = data.filter((user) => {
-    const userFirstName = user.name.first.toLowerCase();
-    const userLastName = user.name.last.toLowerCase();
-    const userEmail = user.email.toLowerCase();
+  const handleSearch = () => {
+    const searchData = data.filter((user) => {
+      const userFirstName = user.name.first.toLowerCase();
+      const userLastName = user.name.last.toLowerCase();
+      const userEmail = user.email.toLowerCase();
 
-    const firstNameMatch = userFirstName.includes(searchTerm.toLowerCase());
-    const lastNameMatch = userLastName.includes(searchTerm.toLowerCase());
-    const emailMatch = userEmail.includes(searchTerm.toLowerCase());
+      const firstNameMatch = userFirstName === searchTerm.toLowerCase();
+      const lastNameMatch = userLastName === searchTerm.toLowerCase();
+      const emailMatch = userEmail.includes(searchTerm.toLowerCase());
 
-    return firstNameMatch || lastNameMatch || emailMatch;
-  });
+      return firstNameMatch || lastNameMatch || emailMatch;
+    });
 
-  const displayedData = searchTerm === "" ? data : searchData;
-
-  const handleSearch = (keyword: string) => {
-    setSearchTerm(keyword);
+    setDataToDisplay(searchData);
   };
 
   const handleSort = (column: "first" | "last" | "age") => {
@@ -52,24 +51,25 @@ const DataView = () => {
       setSortColumn(column);
       setSortOrder("asc");
     }
+    const sortedData = [...data];
+    if (sortColumn !== "none") {
+      sortedData.sort((a, b) => {
+        const aValue = sortColumn === "age" ? a.dob.age : a.name[sortColumn];
+        const bValue = sortColumn === "age" ? b.dob.age : b.name[sortColumn];
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sortOrder === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        } else if (typeof aValue === "number" && typeof bValue === "number") {
+          return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+        }
+
+        return 0;
+      });
+    }
+
+    setDataToDisplay(sortedData);
   };
-
-  const sortedData = [...displayedData];
-  if (sortColumn !== "none") {
-    sortedData.sort((a, b) => {
-      const aValue = sortColumn === "age" ? a.dob.age : a.name[sortColumn];
-      const bValue = sortColumn === "age" ? b.dob.age : b.name[sortColumn];
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortOrder === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      } else if (typeof aValue === "number" && typeof bValue === "number") {
-        return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
-      }
-
-      return 0;
-    });
-  }
 
   useEffect(() => {
     fetch(BASE_URL)
@@ -78,16 +78,26 @@ const DataView = () => {
       })
       .then((data) => {
         setData(data.results);
+        setDataToDisplay(data.results);
       });
   }, []);
 
+  useEffect(() => {
+    handleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
+
   return (
     <div className="dataview__container">
-      <Header setData={setData} setSearchTerm={setSearchTerm} />
-      <SearchBar onSearch={handleSearch} />
-      <FilterBar filter={data} setData={setData} />
+      <Header
+        data={data}
+        setDataToDisplay={setDataToDisplay}
+        setSearchTerm={setSearchTerm}
+      />
+      <SearchBar setSearchTerm={setSearchTerm} />
+      <FilterBar filter={data} setDataToDisplay={setDataToDisplay} />
       <TableContainer
-        data={displayedData}
+        data={dataToDisplay}
         handleSort={handleSort}
         columnLabels={columnLabels}
       />

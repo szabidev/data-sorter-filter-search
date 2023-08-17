@@ -1,22 +1,15 @@
 import React, { FC } from "react";
+import { UserData } from "../userData";
 
 interface HeaderProps {
-  setData: (data: any) => void;
+  data: UserData[];
+  setDataToDisplay: (data: UserData[]) => void;
   setSearchTerm: (keyword: string) => void;
 }
 
-const Header: FC<HeaderProps> = ({ setData, setSearchTerm }) => {
-  const fetchData = () => {
-    const BASE_URL = "https://randomuser.me/api/?results=1000";
-
-    fetch(BASE_URL)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.results);
-      });
-
+const Header: FC<HeaderProps> = ({ data, setDataToDisplay, setSearchTerm }) => {
+  const resetData = () => {
+    setDataToDisplay(data);
     setSearchTerm("");
   };
 
@@ -29,7 +22,7 @@ const Header: FC<HeaderProps> = ({ setData, setSearchTerm }) => {
             <img
               src="/assets/svg/refresh.svg"
               alt="refresh button"
-              onClick={fetchData}
+              onClick={resetData}
             />
             <img src="/assets/svg/settings.svg" alt="settings button" />
           </div>
