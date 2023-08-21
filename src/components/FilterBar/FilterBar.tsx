@@ -3,10 +3,15 @@ import { UserData } from "../userData";
 
 interface FilterBarProps {
   filter: UserData[];
+  dataToDisplay: UserData[];
   setDataToDisplay: (users: UserData[]) => void;
 }
 
-const FilterBar: FC<FilterBarProps> = ({ filter, setDataToDisplay }) => {
+const FilterBar: FC<FilterBarProps> = ({
+  filter,
+  dataToDisplay,
+  setDataToDisplay,
+}) => {
   const [uniqueCountries, setUniqueCountries] = useState<string[]>([]);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
@@ -94,8 +99,8 @@ const FilterBar: FC<FilterBarProps> = ({ filter, setDataToDisplay }) => {
         <p>Filter</p>
       </button>
       <div className="filter__results">
-        {/* <span>Showing</span> {filteredData.length} <span>from</span>{" "}
-        {filter.length} <span>results</span> */}
+        <span>Showing</span> {dataToDisplay.length} <span>from</span>{" "}
+        {filter.length} <span>results</span>
       </div>
     </div>
   );

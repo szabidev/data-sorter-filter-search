@@ -95,7 +95,11 @@ const DataView = () => {
         setSearchTerm={setSearchTerm}
       />
       <SearchBar setSearchTerm={setSearchTerm} />
-      <FilterBar filter={data} setDataToDisplay={setDataToDisplay} />
+      <FilterBar
+        filter={data}
+        dataToDisplay={dataToDisplay}
+        setDataToDisplay={setDataToDisplay}
+      />
       <TableContainer
         data={dataToDisplay}
         handleSort={handleSort}
