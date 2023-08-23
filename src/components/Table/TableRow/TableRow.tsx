@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { UserData } from "../../userData";
-// import { get } from "lodash-es";
 
 interface TableRowProps {
   data: UserData;
@@ -18,21 +17,6 @@ const TableRow: FC<TableRowProps> = ({ data, columnLabels }) => {
   return (
     <>
       <tr>
-        {/* {columnLabels.map((column) => (
-          <td key={column.key}>
-            {column.key === "picture" ? (
-              <img
-                src={data.picture.thumbnail}
-                alt="user"
-                className="user__image"
-              />
-            ) : column.key === "dob" ? (
-              <p>{getDate(data.dob.date)}</p>
-            ) : (
-              <p>{get(data, column.key)}</p>
-            )}
-          </td>
-        ))} */}
         <td>
           <img
             src={data.picture.thumbnail}
